@@ -11,7 +11,6 @@ create table posts (
 create table users (
     id integer primary key autoincrement,
     username text not null,
-    password text not null
+    pw_hash text not null
     -- created at 
-    -- hashed password save?
 );
