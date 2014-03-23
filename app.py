@@ -57,5 +57,57 @@ def view_status():
     resp = { "status": "ok", "timestamp": int(time.time()) }
     return jsonify(resp)
 
+@app.route('/delay/<int:seconds>')
+def delay(seconds):
+    delay = min(seconds, 10) # max 10 seconds
+    time.sleep(delay)
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    resp = { "origin": ip , "delay": seconds }
+    return jsonify(resp)
+
+
+# --- 
+# Restful API
+# ---
+
+class Blog(restful.Resource):
+    # get /blog/posts all posts
+    def get(self):
+        db = get_db()
+        cur = db.execute('select id, title, content from posts')
+        posts = cur.fetchall()
+        return [{'id': p[0], 'title': p[1], 'content': p[2]} for p in posts]
+
+    def post(self):
+        db = get_db()
+        db.execute('insert into posts (title, content) values (?, ?)',
+                  [request.form['title'], request.form['content']])
+        db.commit()
+        return {'title': request.form['title'],
+                'content': request.form['content']}, 201
+
+class BlogPost(restful.Resource):
+    def get(self, post_id):
+        db = get_db()
+        cur = db.execute('select * from posts where id = (?)', [post_id])
+        post = cur.fetchone()
+        print post
+        return {'id': post[0], 'title': post[1], 'content': post[2]}
+
+    def put(self, post_id):
+        db = get_db()
+        db.execute('update from posts where id = (?)', [post_id])
+        db.commit()
+        return {'status': 'success'}, 201
+
+    def delete(self, post_id):
+        db = get_db()
+        db.execute('delete from posts where id = (?)', [post_id])
+        db.commit()
+        return "", 204
+
+api.add_resource(Blog, '/blog/posts', '/blog/posts/')
+api.add_resource(BlogPost, '/blog/posts/<int:post_id>')
+
 if __name__ == "__main__":
     app.run(debug=True)
