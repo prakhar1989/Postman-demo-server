@@ -1,5 +1,6 @@
-def get_headers(request, *keys):
-    print keys
+import string
+import random
 
-if __name__ == "__main__":
-    get_headers("prakjar", "asdsa", "WQewe")
+def generate_token(n=30):
+    """ returns a n-digit letters-only random token """
+    return ''.join(random.choice(string.ascii_letters) for i in xrange(n))
