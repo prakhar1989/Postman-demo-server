@@ -149,13 +149,13 @@ class UserList(restful.Resource):
 @app.route('/blog/users/<int:user_id>')
 def user_detail(user_id):
     db = get_db()
-    cur = db.execute('select id, username, created_at, token, pw_hash from \
+    cur = db.execute('select id, username, created_at, token from \
                      users where id = (?)', [user_id])
     user = cur.fetchone()
     if not user:
         restful.abort(404, message="user doesn't exist")
     return jsonify({'id': user[0], 'username': user[1],
-                    'created_at': user[2], 'token': user[3], 'pw_hash': user[4]})
+                    'created_at': user[2], 'token': user[3]})
 
 # post /users/tokens - create a new token
 @app.route('/blog/users/tokens/', methods=["POST"])
