@@ -3,21 +3,22 @@ import os
 from sqlite3 import dbapi2 as sqlite3
 import json
 
-from flask import Flask, Response, request, jsonify, g
+from flask import Flask, Response, request, jsonify, g, Blueprint
 from flask.ext import restful
 from werkzeug import check_password_hash, generate_password_hash
+
 import utils.helper as helpers
+from postmanbin.debug_routes import debug_routes
 
 app = Flask(__name__)
 api = restful.Api(app)
 
 app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, 'postman_demo.db'),
-    DEBUG=True,
-    SECRET_KEY="supersecretkey",
-    USERNAME="admin",
-    PASSWORD="password"
+    DATABASE=os.path.join(app.root_path, 'db/postman_demo.db'),
+    DEBUG=True
 ))
+
+app.register_blueprint(debug_routes)
 
 # ----
 # DB Operations
@@ -45,28 +46,6 @@ def get_db():
 def close_db(error):
     if hasattr(g, 'sqlite_db'):
         g.sqlite_db.close()
-
-# ----
-# Debug Routes
-# ----
-
-@app.route('/')
-def view_all_endpoints():
-    return jsonify({"name": "hello world"})
-
-@app.route('/status')
-def view_status():
-    resp = { "status": "ok", "timestamp": int(time.time()) }
-    return jsonify(resp)
-
-@app.route('/delay/<int:seconds>')
-def delay(seconds):
-    delay = min(seconds, 10) # max 10 seconds
-    time.sleep(delay)
-    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    resp = { "origin": ip , "delay": seconds }
-    return jsonify(resp)
-
 
 # --- 
 # Restful API
@@ -182,10 +161,9 @@ def delete_token(token_id):
     db.commit()
     return jsonify({'message': 'Token deleted successfully'})
 
-api.add_resource(Blog, '/blog/posts/')
+api.add_resource(Blog, '/blog/posts')
 api.add_resource(BlogPost, '/blog/posts/<int:post_id>')
 api.add_resource(UserList, '/blog/users/')
 
 if __name__ == "__main__":
-    #init_db()
     app.run()
