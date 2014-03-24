@@ -3,7 +3,6 @@ drop table if exists users;
 
 create table posts (
     id integer primary key autoincrement, 
-    title text not null,
     content text not null,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
