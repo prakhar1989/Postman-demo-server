@@ -9,6 +9,11 @@ import utils.helper as helpers
 
 debug_routes = Blueprint('debug_routes', __name__)
 
+
+def get_headers():
+    headers = dict(request.headers.items())
+    return headers
+
 @debug_routes.route('/')
 def view_all_endpoints():
     return jsonify({"name": "hello world"})
@@ -25,3 +30,8 @@ def delay(seconds):
     ip = request.headers.get('X-Forwarded-For', request.remote_addr)
     resp = { "origin": ip , "delay": seconds }
     return jsonify(resp)
+
+@debug_routes.route('/headers')
+def headers():
+    headers = get_headers()
+    return jsonify({'headers': headers})
