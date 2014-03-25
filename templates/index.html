@@ -1,126 +1,93 @@
-<table>
-<thead>
-<tr>
-	<th></th>
-	<th>Method</th>
-	<th>Endpoint</th>
-	<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-   <th>1</th>
-   <th>GET</th>
-   <th>{{url}}/blog/posts</th>
-   <th>Return all blog posts</th>
-</tr>
-<tr>
-   <th>2</th>
-   <th>DELETE</th>
-   <th>{{url}}/blog/posts/{{id}}</th>
-   <th>Delete the existing blog post</th>
-</tr>
-<tr>
-   <th>3</th>
-   <th>GET</th>
-   <th>{{url}}</th>
-   <th>Returns a JSON with all the available API endpoints.</th>
-</tr>
-<tr>
-   <th>4</th>
-   <th>GET</th>
-   <th>{{url}}/blog/users/{{user_id}}</th>
-   <th>Get user details for a user</th>
-</tr>
-<tr>
-   <th>5</th>
-   <th>GET</th>
-   <th>{{url}}/blog/posts/{{id}}</th>
-   <th>Return blog post with that ID</th>
-</tr>
-<tr>
-   <th>6</th>
-   <th>POST</th>
-   <th>{{url}}/blog/users/</th>
-   <th>Create a new user with the given username and password.</th>
-</tr>
-<tr>
-   <th>7</th>
-   <th>POST</th>
-   <th>{{url}}/blog/posts</th>
-   <th>Create a new blog post</th>
-</tr>
-<tr>
-   <th>8</th>
-   <th>GET</th>
-   <th>{{url}}/cookies/delete?name</th>
-   <th>Similar to httpbin.org/cookies. Delete a cookie.</th>
-</tr>
-<tr>
-   <th>9</th>
-   <th>GET</th>
-   <th>{{url}}/delay/10</th>
-   <th>Return response after a few seconds</th>
-</tr>
-<tr>
-   <th>10</th>
-   <th>POST</th>
-   <th>{{url}}/post</th>
-   <th>Similar to httpbin.org/post. Return POST data.</th>
-</tr>
-<tr>
-   <th>11</th>
-   <th>POST</th>
-   <th>{{url}}/blog/users/tokens/</th>
-   <th>POST on this endpoint will create a new token provided the username and password is correct. The returned token will be used to make subsequent requests.</th>
-</tr>
-<tr>
-   <th>12</th>
-   <th>GET</th>
-   <th>{{url}}/cookies</th>
-   <th>Similar to httpbin.org/cookies. Return cookies set in the domain.</th>
-</tr>
-<tr>
-   <th>13</th>
-   <th>DELETE</th>
-   <th>{{url}}/blog/users/tokens/{{token_id}}</th>
-   <th>Delete the token. Effectively signing out the user.</th>
-</tr>
-<tr>
-   <th>14</th>
-   <th>GET</th>
-   <th>{{url}}/get</th>
-   <th>Similar to httpbin.org/get. Return GET data.</th>
-</tr>
-<tr>
-   <th>15</th>
-   <th>GET</th>
-   <th>{{url}}/headers</th>
-   <th>Similar to httpbin.org/headers. Return all the headers passed to it.</th>
-</tr>
-<tr>
-   <th>16</th>
-   <th>GET</th>
-   <th>{{url}}/cookies/set?name=value</th>
-   <th>Similar to httpbin.org/cookies. Set a cookie</th>
-</tr>
-<tr>
-   <th>17</th>
-   <th>PUT</th>
-   <th>{{url}}/blog/posts/{{id}}</th>
-   <th>Modify the existing post</th>
-</tr>
-<tr>
-   <th>18</th>
-   <th>GET</th>
-   <th>{{url}}/blog/users/</th>
-   <th>Get all current users of the blog.</th>
-</tr>
-<tr>
-   <th>19</th>
-   <th>GET</th>
-   <th>{{url}}/status</th>
-   <th>Return the status of the API with the timestamp.</th>
-</tr>    
-</tbody>
-</table>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <title>PostmanBin</title>
+  <style type='text/css' media='all'>
+  /* style: man */
+  body#manpage {margin:0}
+  .mp {max-width:100ex;padding:0 9ex 1ex 4ex}
+  .mp p,.mp pre,.mp ul,.mp ol,.mp dl {margin:0 0 20px 0}
+  .mp h2 {margin:10px 0 0 0}
+  .mp > p,.mp > pre,.mp > ul,.mp > ol,.mp > dl {margin-left:8ex}
+  .mp h3 {margin:0 0 0 4ex}
+  .mp dt {margin:0;clear:left}
+  .mp dt.flush {float:left;width:8ex}
+  .mp dd {margin:0 0 0 9ex}
+  .mp h1,.mp h2,.mp h3,.mp h4 {clear:left}
+  .mp pre {margin-bottom:20px}
+  .mp pre+h2,.mp pre+h3 {margin-top:22px}
+  .mp h2+pre,.mp h3+pre {margin-top:5px}
+  .mp img {display:block;margin:auto}
+  .mp h1.man-title {display:none}
+  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family:monospace;font-size:14px;line-height:1.42857142857143}
+  .mp h2 {font-size:16px;line-height:1.25}
+  .mp h1 {font-size:20px;line-height:2}
+  .mp {text-align:justify;background:#fff}
+  .mp,.mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color:#131211}
+  .mp h1,.mp h2,.mp h3,.mp h4 {color:#030201}
+  .mp u {text-decoration:underline}
+  .mp code,.mp strong,.mp b {font-weight:bold;color:#131211}
+  .mp em,.mp var {font-style:italic;color:#232221;text-decoration:none}
+  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color:#0000ff}
+  .mp b.man-ref {font-weight:normal;color:#434241}
+  .mp pre {padding:0 4ex}
+  .mp pre code {font-weight:normal;color:#434241}
+  .mp h2+pre,h3+pre {padding-left:0}
+  ol.man-decor,ol.man-decor li {margin:3px 0 10px 0;padding:0;float:left;width:33%;list-style-type:none;text-transform:uppercase;color:#999;letter-spacing:1px}
+  ol.man-decor {width:100%}
+  ol.man-decor li.tl {text-align:left}
+  ol.man-decor li.tc {text-align:center;letter-spacing:4px}
+  ol.man-decor li.tr {text-align:right;float:right}
+  </style>
+  <style type='text/css' media='all'>
+  /* style: 80c */
+  .mp {max-width:86ex}
+  ul {list-style: None; margin-left: 1em!important}
+  .man-navigation {left:101ex}
+  </style>
+</head>
+
+<body id='manpage'>
+<a href="http://github.com/prakhar1989/Postman-demo-server"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+<div class='mp'>
+<h1>PostmanBin: Demo Service for Postman</h1>
+
+<h2 id="ENDPOINTS">DEBUG ENDPOINTS</h2>
+
+<ul>
+<li><a href="/" data-bare-link="true"><code>/</code></a> This page.</li>
+<li><a href="/ip" data-bare-link="true"><code>/ip</code></a> Returns Origin IP.</li>
+<li><a href="/headers" data-bare-link="true"><code>/headers</code></a> Returns header dict.</li>
+<li><a href="/get" data-bare-link="true"><code>/get</code></a> Returns GET data.</li>
+<li><code>/post</code> Returns POST data.</li>
+<li><a href="/cookies" data-bare-link="true"><code>/cookies</code></a> Returns cookie data.</li>
+<li><a href="/cookies/set?k1=v1&amp;k2=v2"><code>/cookies/set?name=value</code></a> Sets one or more simple cookies.</li>
+<li><a href="/cookies/delete?k1&amp;k2"><code>/cookies/delete?key=name</code></a> Deletes one or more simple cookies.</li>
+<li><a href="/delay/3"><code>/delay/:n</code></a> Delays responding for <em>n</em>–10 seconds.</li>
+</ul>
+
+<h2 id="ENDPOINTS">RESTFUL API ENDPOINTS</h2>
+
+<ul>
+<li><a href="/blog/posts" data-bare-link="true"><code>/blog/posts</code></a> [GET] Display all blog posts.</li>
+<li><a href="/blog/posts/1" data-bare-link="true"><code>/blog/posts/:id</code></a> [GET] Display one blog post.</li>
+<li><code>/blog/posts?user_id=1&amp;token=1234</code> [DELETE] Delete a blogpost.</li>
+<li><code>/blog/posts?user_id=1&amp;token=1234</code> [POST] Add a new blogpost.</li>
+<li><code>/blog/posts?user_id=1&amp;token=1234</code> [PUT] Update blogpost.</li>
+<li><a href="/blog/users/" data-bare-link="true"><code>/blog/users</code></a> [GET] Display all users.</li>
+<li><a href="/blog/users/1" data-bare-link="true"><code>/blog/users/:id</code></a> [GET] Display one user.</li>
+<li><a href="/blog/users" data-bare-link="true"><code>/blog/users/</code></a> [POST] Register a new user.</li>
+<li><a href="/blog/users/tokens" data-bare-link="true"><code>/blog/users/tokens</code></a> [POST] Create a new token.</li>
+</ul>
+
+<h2>COLLECTION</h2>
+<p>Postman collection with the api endpoints can be downloaded <a href='https://www.getpostman.com/collections/fc3f0598daaa5271e4f7'>here</a></p>
+
+<h2>THANKS</h2>
+<p>Special thanks to <a href="http://httpbin.org">httpbin</a>
+
+</div>
+</body>
+</html>
