@@ -2,7 +2,7 @@ import time
 import base64
 import json
 
-from flask import Response, request, jsonify, g, Blueprint
+from flask import Response, request, jsonify, g, Blueprint, redirect, make_response
 import utils.helper as helpers
 
 # ----
@@ -94,6 +94,27 @@ def post_request():
     resp['data'] = json_safe(data)
     return jsonify(resp)
 
+# GET /cookies
 @debug_routes.route('/cookies')
 def cookies():
     return jsonify(cookies=request.cookies)
+
+# GET /cookies/set?name=value
+@debug_routes.route('/cookies/set')
+def set_cookie():
+    if request.args:
+        response = make_response(redirect('/cookies'))
+        key, value = request.args.items()[0]
+        response.set_cookie(key, value)
+        return response
+    return jsonify(message="No params found"), 404
+
+# GET /cookies/delete?key=name
+@debug_routes.route('/cookies/delete')
+def delete_cookie():
+    cookies = dict(request.cookies)
+    if request.args:
+        response = make_response(redirect('/cookies'))
+        response.delete_cookie(key=request.args.get('key'))
+        return response
+    return jsonify(message="No key found"), 404
