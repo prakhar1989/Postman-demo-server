@@ -2,7 +2,8 @@
 
 Sample Collection - https://www.getpostman.com/collections/fc3f0598daaa5271e4f7
 
-### Endpoints
+Endpoints
+===
 
 <table>
 <thead>
@@ -130,4 +131,3 @@ Sample Collection - https://www.getpostman.com/collections/fc3f0598daaa5271e4f7
 </tr>    
 </tbody>
 </table>
-

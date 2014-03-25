@@ -11,31 +11,10 @@ import utils.helper as helpers
 
 debug_routes = Blueprint('debug_routes', __name__)
 
-def json_safe(string, content_type='application/octet-stream'):
-    """Returns JSON-safe version of `string`.
-
-    If `string` is a Unicode string or a valid UTF-8, it is returned unmodified,
-    as it can safely be encoded to JSON string.
-
-    If `string` contains raw/binary data, it is Base64-encoded, formatted and
-    returned according to "data" URL scheme (RFC2397). Since JSON is not
-    suitable for binary data, some additional encoding was necessary; "data"
-    URL scheme was chosen for its simplicity.
-
-    Courtesy: httpbin
-    """
-
-    try:
-        _encoded = json.dumps(string)
-        return string
-    except ValueError:
-        return ''.join(['data:%s;base64,' % content_type,
-                        base64.b64encode(string)])
-
 def get_files():
     files = dict()
     for k, v in request.files.items():
-        files[k] = json_safe(v.read(), request.files[k].content_type)
+        files[k] = helpers.json_safe(v.read(), request.files[k].content_type)
     return files
 
 def get_headers():
@@ -91,7 +70,7 @@ def post_request():
     resp['files'] = get_files()
     resp['json'] = _json
     resp['form'] = form
-    resp['data'] = json_safe(data)
+    resp['data'] = helpers.json_safe(data)
     return jsonify(resp)
 
 # GET /cookies
