@@ -1,9 +1,18 @@
+# -*- coding: utf-8 -*-
+
+"""
+postmanbin.app
+~~~~~~
+
+This module provides the core postmanbin API for blogs and users.
+"""
+
 import time
 import os
 from sqlite3 import dbapi2 as sqlite3
 import json
 
-from flask import Flask, Response, request, jsonify, g, Blueprint
+from flask import Flask, Response, request, jsonify, g, Blueprint, render_template
 from flask.ext import restful
 from werkzeug import check_password_hash, generate_password_hash
 
@@ -18,6 +27,7 @@ app.config.update(dict(
     DEBUG=True
 ))
 
+# register the debug_routes blueprint 
 app.register_blueprint(debug_routes)
 
 # ----
@@ -124,9 +134,9 @@ class UserList(restful.Resource):
         db.commit()
         return {'message': "User created successfully"}
 
-# get /blog/users/:id - info about a user
 @app.route('/blog/users/<int:user_id>')
 def user_detail(user_id):
+    """ get /blog/users/:id - info about a user """
     db = get_db()
     cur = db.execute('select id, username, created_at, token from \
                      users where id = (?)', [user_id])
@@ -136,9 +146,9 @@ def user_detail(user_id):
     return jsonify({'id': user[0], 'username': user[1],
                     'created_at': user[2], 'token': user[3]})
 
-# post /users/tokens - create a new token
 @app.route('/blog/users/tokens/', methods=["POST"])
 def new_token():
+    """ post /users/tokens - create a new token """
     db = get_db()
     post_data = json.loads(request.data)
     cur = db.execute('select pw_hash from users where username = (?)',
@@ -153,23 +163,26 @@ def new_token():
     else:
         restful.abort(401, message="username / password combination doesn't match")
 
-# delete /users/tokens/id - delete token
 @app.route('/blog/users/tokens/<token_id>', methods=["DELETE"])
 def delete_token(token_id):
+    """ delete /users/tokens/id - delete token """
     db = get_db()
     db.execute('update users set token = null where token = (?)', [token_id])
     db.commit()
     return jsonify({'message': 'Token deleted successfully'})
 
+
+# Adding API resources
 api.add_resource(Blog, '/blog/posts')
 api.add_resource(BlogPost, '/blog/posts/<int:post_id>')
 api.add_resource(UserList, '/blog/users/')
 
 
-# display documentation
+# Display documentation
 @app.route('/')
 def index():
-    return jsonify(hello="world")
+    return render_template('index.html')
+
 
 if __name__ == "__main__":
     app.run()
