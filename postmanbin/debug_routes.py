@@ -24,37 +24,11 @@ def get_headers():
 def get_ip():
     return request.headers.get('X-Forwarded-For', request.remote_addr)
 
-@debug_routes.route('/')
-def view_all_endpoints():
-    return jsonify({"name": "hello world"})
+def get_dict(*keys, **extras):
+    _keys = ('url', 'args', 'form', 'data', 'origin', 'status', 'headers',
+             'files', 'json', 'timestamp', 'cookies')
 
-@debug_routes.route('/status')
-def view_status():
-    resp = { "status": "ok", "timestamp": int(time.time()) }
-    return jsonify(resp)
-
-@debug_routes.route('/delay/<int:seconds>')
-def delay(seconds):
-    delay = min(seconds, 10) # max 10 seconds
-    time.sleep(delay)
-    resp = { "origin": get_ip() , "delay": seconds }
-    return jsonify(resp)
-
-@debug_routes.route('/headers')
-def headers():
-    return jsonify({'headers': get_headers()})
-
-@debug_routes.route('/get')
-def get_request():
-    resp = { "origin": get_ip() }
-    resp["headers"] = get_headers()
-    resp['url'] = request.url
-    resp['args'] = request.args
-    return jsonify(resp)
-
-@debug_routes.route('/post', methods=["POST"])
-def post_request():
-    resp = { "origin": get_ip() }
+    assert all(map(_keys.__contains__, keys))
 
     data = request.data
     form = request.form
@@ -64,19 +38,61 @@ def post_request():
     except ValueError:
         _json = None
 
-    resp["headers"] = get_headers()
-    resp['url'] = request.url
-    resp['args'] = request.args
-    resp['files'] = get_files()
-    resp['json'] = _json
-    resp['form'] = form
-    resp['data'] = helpers.json_safe(data)
-    return jsonify(resp)
+    d = dict(
+        url       = request.url,
+        args      = request.args,
+        form      = form,
+        data      = helpers.json_safe(data),
+        origin    = get_ip(),
+        headers   = get_headers(),
+        files     = get_files(),
+        json      = _json,
+        timestamp = int(time.time()),
+        status    = "ok",
+        cookies   = request.cookies
+    )
+
+    response_dict = dict()
+
+    for k in keys:
+        response_dict[k] = d[k]
+
+    for e in extras:
+        response_dict[e] = extras[e]
+
+    return response_dict
+
+@debug_routes.route('/')
+def view_all_endpoints():
+    return jsonify(hello="world")
+
+@debug_routes.route('/status')
+def view_status():
+    return jsonify(get_dict("status", "timestamp"))
+
+@debug_routes.route('/delay/<int:seconds>')
+def delay(seconds):
+    delay = min(seconds, 10) # max 10 seconds
+    time.sleep(delay)
+    return jsonify(get_dict('origin', delay=seconds))
+
+@debug_routes.route('/headers')
+def headers():
+    return jsonify(get_dict('headers'))
+
+@debug_routes.route('/get')
+def get_request():
+    return jsonify(get_dict('origin', 'headers', 'url', 'args'))
+
+@debug_routes.route('/post', methods=["POST"])
+def post_request():
+    return jsonify(get_dict('form', 'data', 'json', 'files', 'args',
+                            'url', 'headers', 'origin'))
 
 # GET /cookies
 @debug_routes.route('/cookies')
 def cookies():
-    return jsonify(cookies=request.cookies)
+    return jsonify(get_dict('cookies'))
 
 # GET /cookies/set?name=value
 @debug_routes.route('/cookies/set')
