@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+
+"""
+postmanbin.debug
+~~~~~~
+
+This module provides the debug routes for the postmanbin application. Inspired by HTTPBIN.
+"""
+
 import time
 import base64
 import json
@@ -9,22 +18,27 @@ import utils.helper as helpers
 # Debug Routes
 # ----
 
+# initialize debug_routes as a blueprint
 debug_routes = Blueprint('debug_routes', __name__)
 
 def get_files():
+    """ returns files from the request context """
     files = dict()
     for k, v in request.files.items():
         files[k] = helpers.json_safe(v.read(), request.files[k].content_type)
     return files
 
 def get_headers():
+    """ returns headers from the request context """
     headers = dict(request.headers.items())
     return headers
 
 def get_ip():
+    """ returns the client ip """
     return request.headers.get('X-Forwarded-For', request.remote_addr)
 
 def get_dict(*keys, **extras):
+    """ main helper function that generates a dict with subset of keys as requested """
     _keys = ('url', 'args', 'form', 'data', 'origin', 'status', 'headers',
              'files', 'json', 'timestamp', 'cookies')
 
@@ -62,41 +76,43 @@ def get_dict(*keys, **extras):
 
     return response_dict
 
-@debug_routes.route('/')
-def view_all_endpoints():
-    return jsonify(hello="world")
-
 @debug_routes.route('/status')
 def view_status():
+    """ return json showing status and timestamp """
     return jsonify(get_dict("status", "timestamp"))
 
 @debug_routes.route('/delay/<int:seconds>')
 def delay(seconds):
+    """ show json response after a delay of n (max 10) seconds """
     delay = min(seconds, 10) # max 10 seconds
     time.sleep(delay)
     return jsonify(get_dict('origin', delay=seconds))
 
 @debug_routes.route('/headers')
 def headers():
+    """ return json showing headers """
     return jsonify(get_dict('headers'))
 
 @debug_routes.route('/get')
 def get_request():
+    """ same as httpbin """
     return jsonify(get_dict('origin', 'headers', 'url', 'args'))
 
 @debug_routes.route('/post', methods=["POST"])
 def post_request():
+    """ same as httpbin """
     return jsonify(get_dict('form', 'data', 'json', 'files', 'args',
                             'url', 'headers', 'origin'))
 
 # GET /cookies
 @debug_routes.route('/cookies')
 def cookies():
+    """ retrive cookies """
     return jsonify(get_dict('cookies'))
 
-# GET /cookies/set?name=value
 @debug_routes.route('/cookies/set')
 def set_cookie():
+    """ set the value of cookie  - GET /cookies/set?name=value"""
     if request.args:
         response = make_response(redirect('/cookies'))
         key, value = request.args.items()[0]
@@ -104,9 +120,9 @@ def set_cookie():
         return response
     return jsonify(message="No params found"), 404
 
-# GET /cookies/delete?key=name
 @debug_routes.route('/cookies/delete')
 def delete_cookie():
+    """ deletes the value of cookie - GET /cookies/delete?key=name """
     cookies = dict(request.cookies)
     if request.args:
         response = make_response(redirect('/cookies'))
