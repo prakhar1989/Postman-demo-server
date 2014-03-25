@@ -165,5 +165,11 @@ api.add_resource(Blog, '/blog/posts')
 api.add_resource(BlogPost, '/blog/posts/<int:post_id>')
 api.add_resource(UserList, '/blog/users/')
 
+
+# display documentation
+@app.route('/')
+def index():
+    return jsonify(hello="world")
+
 if __name__ == "__main__":
     app.run()
