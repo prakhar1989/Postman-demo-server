@@ -1,7 +1,7 @@
 from sqlite3 import dbapi2 as sqlite3
 import os
 
-DATABASE = os.path.join('db/postman_demo.db')
+DATABASE = os.path.join('postman_demo.db')
 
 def connect_db():
     rv = sqlite3.connect(DATABASE)

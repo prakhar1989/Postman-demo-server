@@ -23,7 +23,7 @@ app = Flask(__name__)
 api = restful.Api(app)
 
 app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, 'db/postman_demo.db'),
+    DATABASE=os.path.join(app.root_path, 'postman_demo.db'),
     DEBUG=True
 ))
 
