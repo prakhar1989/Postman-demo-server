@@ -104,6 +104,13 @@ def post_request():
     return jsonify(get_dict('form', 'data', 'json', 'files', 'args',
                             'url', 'headers', 'origin'))
 
+@debug_routes.route('/code/<int:code>')
+def get_code(code):
+    """ return the HTTP status code """
+    response = make_response('')
+    response.status_code = code
+    return response
+
 # GET /cookies
 @debug_routes.route('/cookies')
 def cookies():
