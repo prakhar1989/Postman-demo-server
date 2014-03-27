@@ -140,6 +140,11 @@ def large_response():
         return Response(helpers.dummy_xml(limit), mimetype="text/xml")
     return jsonify(content=helpers.dummy_json(limit))
 
+@debug_routes.route('/method', methods=helpers.POSTMAN_METHODS)
+def custom_methods():
+    return jsonify(method=request.method)
+
+
 @debug_routes.route('/cookies')
 def cookies():
     """ retrive cookies """

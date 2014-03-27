@@ -2,6 +2,10 @@ import string
 import random
 import json
 
+POSTMAN_METHODS = ["GET", "POST", "PATCH", "PUT", "COPY", "HEAD"
+                   "DELETE", "LOCK", "UNLOCK", "PROPFIND",
+                   "PURGE", "LINK", "UNLINK", "OPTIONS"]
+
 def generate_token(n=30):
     """ returns a n-digit letters-only random token """
     return ''.join(random.choice(string.ascii_letters) for i in xrange(n))
