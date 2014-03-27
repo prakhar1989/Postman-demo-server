@@ -11,7 +11,7 @@ import time
 import base64
 import json
 
-from flask import Response, request, jsonify, g, Blueprint, redirect, make_response
+from flask import Response, request, jsonify, g, Blueprint, redirect, make_response, render_template
 import utils.helper as helpers
 
 # ----
@@ -111,7 +111,35 @@ def get_code(code):
     response.status_code = code
     return response
 
-# GET /cookies
+@debug_routes.route('/redirect-to')
+def redirect_page():
+    # GET /redirect-to?url=http://www.example.com
+    url = request.args.get('url')
+    response = make_response('')
+    response.status_code = 302
+    response.headers['Location'] = url.encode('utf-8')
+    return response
+
+@debug_routes.route('/large')
+def large_response():
+    """ Returns large dummy response: GET /large?type=html&n=2 """
+    response_type = request.args.get('type')
+
+    if request.args.get('n'):
+        limit = int(request.args.get('n'))
+    else:
+        limit = 10
+
+    if response_type not in ["json", "xml", "html", "text"]:
+        return jsonify(message="Usage: /large?type=json or xml or html or text")
+    if response_type == "html":
+        return render_template('large.html', limit=range(limit))
+    if response_type == "text":
+        return Response(helpers.dummy_text(limit), mimetype="text")
+    if response_type == "xml":
+        return Response(helpers.dummy_xml(limit), mimetype="text/xml")
+    return jsonify(content=helpers.dummy_json(limit))
+
 @debug_routes.route('/cookies')
 def cookies():
     """ retrive cookies """

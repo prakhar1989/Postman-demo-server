@@ -27,3 +27,36 @@ def json_safe(string, content_type='application/octet-stream'):
         return ''.join(['data:%s;base64,' % content_type,
                         base64.b64encode(string)])
 
+
+def dummy_text(n=5):
+    """ returns dummy text repeated n times """
+    msg = """Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without revolutionary ROI.
+
+Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas. Dramatically maintain clicks-and-mortar solutions without functional solutions.
+
+Completely synergize resource sucking relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service for state of the art customer service.
+    """
+    return "".join([msg for i in range(n)])
+
+def dummy_xml(n=5):
+    """ returns dummy xml repeated n times """
+    header = """<?xml version='1.0' encoding='UTF-8'?>
+    <listofnotes> """
+    content = """ <note>
+    <from>Alice</from>
+    <to>Bob</to>
+    <message>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eleifend mi vel ligula ultricies, sit amet fringilla nisi consectetur. Aenean pretium risus lacus, a posuere libero mollis tincidunt. Aliquam id fermentum tellus. Vivamus sollicitudin elementum dui nec semper. Curabitur consequat lacinia risus. Praesent suscipit venenatis lectus sed pharetra. Etiam id nulla id leo elementum malesuada. Donec faucibus, mi eget hendrerit tincidunt, libero purus tincidunt tortor, at auctor ipsum sem vel quam.</message>
+    </note> """
+    footer = "</listofnotes>"
+    return header + "".join([content for i in range(n)]) + footer
+
+def dummy_json(n=5):
+    """ returns dummy json repeated n times """
+    msg = ["Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without revolutionary ROI.",
+           "Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas. Dramatically maintain clicks-and-mortar solutions without functional solutions.",
+           "Completely synergize resource sucking relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service for state of the art customer service."]
+    resp = {}
+    for i in range(n):
+        resp["message-"+str(i+1)] = random.choice(msg)
+    return resp
+
