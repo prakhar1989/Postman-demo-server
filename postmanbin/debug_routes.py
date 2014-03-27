@@ -127,7 +127,7 @@ def get_jsonp():
     resp_string = []
     for k in request.args:
         if k != "callback":
-            resp_string.append('"{0}":"{1}"'.format(k, request.args.get('k')))
+            resp_string.append('"{0}":"{1}"'.format(k, request.args.get(k)))
     final_response = callback + "({" + ",".join(resp_string) + "})"
     return Response(final_response, mimetype="application/json")
 
@@ -153,8 +153,8 @@ def large_response():
 
 @debug_routes.route('/method', methods=helpers.POSTMAN_METHODS)
 def custom_methods():
+    """ accepts all postman supported HTTP methods """
     return jsonify(method=request.method)
-
 
 @debug_routes.route('/cookies')
 def cookies():
