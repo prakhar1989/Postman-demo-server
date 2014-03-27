@@ -120,6 +120,17 @@ def redirect_page():
     response.headers['Location'] = url.encode('utf-8')
     return response
 
+@debug_routes.route('/jsonp')
+def get_jsonp():
+    """ Returns JSONP response based on url params """
+    callback = request.args.get('callback', 'callback')
+    resp_string = []
+    for k in request.args:
+        if k != "callback":
+            resp_string.append('"{0}":"{1}"'.format(k, request.args.get('k')))
+    final_response = callback + "({" + ",".join(resp_string) + "})"
+    return Response(final_response, mimetype="application/json")
+
 @debug_routes.route('/large')
 def large_response():
     """ Returns large dummy response: GET /large?type=html&n=2 """
