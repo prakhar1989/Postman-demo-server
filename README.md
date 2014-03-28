@@ -7,6 +7,7 @@ Demo server for testing / demonstrating Postman. Postman collection with the api
 
 Make sure you have `sqlite` installed.
 
+```
    $ git clone https://github.com/prakhar1989/Postman-demo-server.git 
    $ virtualenv venv 
    $ source venv/bin/activate
@@ -15,6 +16,7 @@ Make sure you have `sqlite` installed.
    $ python app.py 
     * Running on http://127.0.0.1:5000/
     * Restarting with reloader
+```
 
 To deploy a flask app I have a blogpost written [here](http://prakhar.me/articles/flask-on-nginx-and-gunicorn/) which you can follow.
 
