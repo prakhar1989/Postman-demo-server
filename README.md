@@ -3,6 +3,23 @@ PostmanBin
 
 Demo server for testing / demonstrating Postman. Postman collection with the api endpoints can be downloaded [here](https://www.getpostman.com/collections/fc3f0598daaa5271e4f7).
 
+### Build Steps 
+
+Make sure you have `sqlite` installed.
+
+<code>
+$ git clone https://github.com/prakhar1989/Postman-demo-server.git 
+$ virtualenv venv 
+$ source venv/bin/activate
+$ pip install -r requirements.txt
+$ python setup.py # sets up the database
+$ python app.py 
+ * Running on http://127.0.0.1:5000/
+ * Restarting with reloader
+</code>
+
+To deploy a flask app I have a blogpost written [here](http://prakhar.me/articles/flask-on-nginx-and-gunicorn/) which you can follow.
+
 ### Endpoints
 
 <table>
