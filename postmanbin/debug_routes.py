@@ -184,10 +184,15 @@ def delete_cookie():
 # auth routes
 @debug_routes.route('/auth/basic')
 def basic_auth():
-    """ route for testing basic auth """
+    """ basic auth: username: postman, password: password """
     auth = request.authorization
     if not auth or not (auth.username == "postman" and auth.password == "password"):
         return Response('Could not verify your access level for that URL.\n'
                         'You have to login with proper credentials', 401,
                         {'WWW-Authenticate': 'Basic realm="Login Required"'})
     return jsonify(authenticated=True)
+
+@debug_routes.route('/auth/digest')
+def digest_auth():
+    """ route for testing digest auth """
+    pass
