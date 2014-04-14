@@ -1,0 +1,33 @@
+{
+	"id": "fccda917-b933-8078-291b-340d5f63a806",
+	"name": "dump-postman",
+	"values": [
+		{
+			"key": "url",
+			"value": "http://dump.getpostman.com",
+			"type": "text",
+			"name": "url"
+		},
+		{
+			"key": "id",
+			"value": "1",
+			"type": "text",
+			"name": "id"
+		},
+		{
+			"key": "user_id",
+			"value": "1",
+			"type": "text",
+			"name": "user_id"
+		},
+		{
+			"key": "post_id",
+			"value": "1",
+			"type": "text",
+			"name": "post_id"
+		}
+	],
+	"timestamp": 1397494972344,
+	"synced": false,
+	"syncedFilename": ""
+}
