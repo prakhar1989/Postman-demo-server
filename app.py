@@ -151,15 +151,15 @@ def new_token():
     """ post /users/tokens - create a new token """
     db = get_db()
     post_data = json.loads(request.data)
-    cur = db.execute('select pw_hash from users where username = (?)',
+    cur = db.execute('select id, pw_hash from users where username = (?)',
                     [post_data.get('username')])
-    pw_hash = cur.fetchone()
-    if pw_hash and check_password_hash(pw_hash[0], post_data.get('password')):
+    (user_id, pw_hash) = cur.fetchone()
+    if pw_hash and check_password_hash(pw_hash, post_data.get('password')):
         token = helpers.generate_token()
         db.execute('update users set token = (?) where username = (?)',
                     [token, post_data.get('username')])
         db.commit()
-        return jsonify({'token': token})
+        return jsonify({'token': token, 'user_id': user_id})
     else:
         restful.abort(401, message="username / password combination doesn't match")
 
