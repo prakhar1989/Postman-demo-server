@@ -122,7 +122,7 @@ class UserList(restful.Resource):
         cur = db.execute('select id, username, created_at, token from users')
         users = cur.fetchall()
         return [{'id': u[0], 'username': u[1],
-                 'created_at': u[2], 'token': u[3]} for u in users]
+                 'created_at': u[2]} for u in users]
 
     def post(self):
         db = get_db()
