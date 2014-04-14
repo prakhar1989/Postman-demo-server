@@ -81,10 +81,11 @@ class Blog(restful.Resource):
                              [access_token, user_id])
             user = cur.fetchone()
             if user:
-                db.execute('insert into posts (content, created_at) values (?, ?)',
+                cur.execute('insert into posts (content, created_at) values (?, ?)',
                            [post_data.get('post'), int(time.time())])
+                post_id = cur.lastrowid
                 db.commit()
-                return {'message': "Post added successfully"}
+                return {'message': "Post added successfully", "post_id": post_id}
         return {"message": "Invalid credentials"}
 
 class BlogPost(restful.Resource):
